@@ -1,0 +1,36 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const lastBreakElement = document.createElement('div');
+      lastBreakElement.innerHTML = 'you haven\'t had an 👀 break yet';
+      document.body.appendChild(lastBreakElement);
+
+      const createReminder = () => {
+        let clicked = false;
+        setTimeout(() => {
+          const note = new Notification('👀 break', {
+            requireInteraction: true
+          });
+
+        note.onclick = () => {
+          clicked = true;
+          const now = new Date();
+          lastBreakElement.innerHTML = `your last break was at ${now.getHours()}:${now.getMinutes()}`;
+          note.close();
+          createReminder();
+        };
+
+        note.onclose = () => {
+          if (!clicked) {
+            lastBreakElement.innerHTML = 'notifications will stop until you refresh the page (clicking the x does that)';
+          }
+        };
+
+      }, 1 * 1 * 1000);
+    };
+    createReminder();
+    </script>
+  </body>
+</html>
