@@ -1,36 +1,36 @@
 <html>
-  <head>
-  </head>
-  <body>
-    <script type="text/javascript">
-      const lastBreakElement = document.createElement('div');
-      lastBreakElement.innerHTML = 'you haven\'t had an 👀 break yet';
-      document.body.appendChild(lastBreakElement);
+    <head>
+    </head>
+    <body>
+        <div>The 20-20-20 rule: every <strong>20 minutes</strong> look at something at least <strong>20 feet</strong> away for <strong>20 seconds.</strong></div>
+        <br>
+        <div>Every 20 minutes a notification will remind you to do just that.</div>
+        <br>
 
-      const createReminder = () => {
-        let clicked = false;
-        setTimeout(() => {
-          const note = new Notification('👀 break', {
-            requireInteraction: true
-          });
+        <script type="text/javascript">
+            const lastBreakElement = document.createElement('div');
+            const start = new Date();
+            lastBreakElement.innerHTML = `You haven\'t had an 👀   break yet. (started at ${start.getHours()}:${start.getMinutes()})`;
+            document.body.appendChild(lastBreakElement);
 
-        note.onclick = () => {
-          clicked = true;
-          const now = new Date();
-          lastBreakElement.innerHTML = `your last break was at ${now.getHours()}:${now.getMinutes()}`;
-          note.close();
-          createReminder();
-        };
+            const createReminder = () => {
+                setTimeout(() => {
+                    new Notification('👀 break', {
+                        requireInteraction: true
+                    });
 
-        note.onclose = () => {
-          if (!clicked) {
-            lastBreakElement.innerHTML = 'notifications will stop until you refresh the page (clicking the x does that)';
-          }
-        };
+                    const now = new Date();
+                    lastBreakElement.innerHTML = `your last  👀   break was at ${now.getHours()}:${now.getMinutes()}`;
 
-      }, 20 * 60 * 1000);
-    };
-    createReminder();
-    </script>
-  </body>
+                    createReminder();
+                }, 20 * 60 * 1000);
+            };
+
+            Notification.requestPermission().then(result => {
+                if (result === 'granted') {
+                    createReminder();
+                }
+            });
+        </script>
+    </body>
 </html>
